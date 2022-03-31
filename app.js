@@ -55,7 +55,7 @@ wss.on('connection', function(ws,req) {
       setTimeout(()=>{
         let ind=abusers.indexOf(ip);
         if(ind>-1){
-          abusers.remove(ip);
+          abusers.splice(ip,1);
         }
       },10000);
       ws.close();
