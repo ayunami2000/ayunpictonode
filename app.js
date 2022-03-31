@@ -86,7 +86,7 @@ wss.on('connection', function(ws,req) {
           if(!(playerChecks(data)&&("id" in data)))return ws.close();
           //we ignore the player variable as it is not needed with the current method (it is also less secure if we were to use it)
           //for now, only one room, so dont check the id at all
-          if(users.length>=16)return;
+          if(users.length>=16||abusers.includes(ip))return;
           if(users.includes(ws.playerData))return ws.close();
           if(users.some(p=>p.name==ws.playerData.name))return ws.close();
           //while(users.some(p=>p.name==ws.playerData.name)&&data.player.name.length==0)ws.playerData.name=(""+Math.random()).slice(2);//not sure if original pictochat allowed multiple of the same name buuuuut we will NOT
