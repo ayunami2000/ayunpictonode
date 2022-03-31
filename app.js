@@ -84,7 +84,7 @@ wss.on('connection', function(ws,req) {
           if(isNaN(data.player.color)||data.player.color>16777215)data.player.color=0;
           ws.playerData=data.player;
           ws.send(JSON.stringify({type:"sv_nameVerified",player:ws.playerData}));
-          ws.send(JSON.stringify({type:"sv_roomIds",count:[users.length],ids:["a"]}));
+          ws.send(JSON.stringify({type:"sv_roomIds",count:[users.length],ids:["room_a"]}));
           break;
         case "cl_joinRoom":
           if(ws.playerData==null)return ws.close();
@@ -96,8 +96,8 @@ wss.on('connection', function(ws,req) {
           if(users.some(p=>p.name==ws.playerData.name))return ws.close();
           //while(users.some(p=>p.name==ws.playerData.name)&&data.player.name.length==0)ws.playerData.name=(""+Math.random()).slice(2);//not sure if original pictochat allowed multiple of the same name buuuuut we will NOT
           users.push(ws.playerData);
-          ws.send(JSON.stringify({type:"sv_roomData",id:"a"}));
-          sendToOthers(ws,{type:"sv_playerJoined",player:ws.playerData,id:"a"});
+          ws.send(JSON.stringify({type:"sv_roomData",id:"room_a"}));
+          sendToOthers(ws,{type:"sv_playerJoined",player:ws.playerData,id:"room_a"});
           break;
         case "cl_sendMessage":
           if(ws.playerData==null)return ws.close();
@@ -119,7 +119,7 @@ wss.on('connection', function(ws,req) {
           let ind=users.indexOf(ws.playerData);
           if(ind>-1){
             users.splice(ind,1);
-            sendToOthers(ws,{type:"sv_playerLeft",player:ws.playerData,id:"a"});
+            sendToOthers(ws,{type:"sv_playerLeft",player:ws.playerData,id:"room_a"});
           }
           break;
         default:
@@ -136,7 +136,7 @@ wss.on('connection', function(ws,req) {
       let ind=users.indexOf(ws.playerData);
       if(ind>-1){
         users.splice(ind,1);
-        sendToOthers(ws,{type:"sv_playerLeft",player:ws.playerData,id:"a"});
+        sendToOthers(ws,{type:"sv_playerLeft",player:ws.playerData,id:"room_a"});
       }
     }
   });
