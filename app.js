@@ -44,7 +44,16 @@ function playerChecks(data){
 
 wss.on('connection', function connection(ws) {
   ws.playerData=null;
+  let rate=0;
+  let rateInterval=setInterval(()=>{
+    if(rate>=5){
+      ws.close();
+    }else{
+      rate=0;
+    }
+  },5000);
   ws.on('message', function message(data) {
+    rate++;
     data=data.toString();
     if(data=="pong")return setTimeout(()=>ws!=null&&ws.readyState===WebSocket.OPEN&&ws.send("ping"),10000);
     try{
@@ -99,6 +108,7 @@ wss.on('connection', function connection(ws) {
     }
   });
   ws.on('close', function(){
+    clearInterval(rateInterval);
     if(ws.playerData!=null){
       let ind=users.indexOf(ws.playerData);
       if(ind>-1){
