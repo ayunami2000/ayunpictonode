@@ -82,15 +82,20 @@ app.loader.load((loader, resources) => {
 	const keys_NORMAL = ["1","2","3","4","5","6","7","8","9","0","-","=","q","w","e","r","t","y","u","i","o","p","BACKSPACE","CAPS","a","s","d","f","g","h","j","k","l","ENTER","SHIFT","z","x","c","v","b","n","m",",",".","/",";","\'"," ","[","]"];
 	const keys_CAPS = ["1","2","3","4","5","6","7","8","9","0","-","=","Q","W","E","R","T","Y","U","I","O","P","BACKSPACE","CAPS","A","S","D","F","G","H","J","K","L","ENTER","SHIFT","Z","X","C","V","B","N","M",",",".","/",";","\'"," ","[","]"];
 	const keys_SHIFT = ["!","@","#","$","%","^","&","*","(",")","_","+","Q","W","E","R","T","Y","U","I","O","P","BACKSPACE","CAPS","A","S","D","F","G","H","J","K","L","ENTER","SHIFT","Z","X","C","V","B","N","M","<",">","?",":","~"," ","{","}"];
+  var joinedRoom = false;
   
   window.onkeydown=function(e){
-    sounds.key_down.play();
+    if(joinedRoom){
+      sounds.key_down.play();
+    }
   };
   
   window.onkeyup=function(e){
-    const key = e.key.replace("Backspace","BACKSPACE").replace("CapsLock","CAPSLOCK").replace("Enter","ENTER").replace("Shift","SHIFT");
-    if(keys_NORMAL.includes(key)||keys_CAPS.includes(key)||keys_SHIFT.includes(key))addCharacterDirect(key);
-    sounds.key_up.play();
+    if(joinedRoom){
+      const key = e.key.replace("Backspace","BACKSPACE").replace("CapsLock","CAPSLOCK").replace("Enter","ENTER").replace("Shift","SHIFT");
+      if(keys_NORMAL.includes(key)||keys_CAPS.includes(key)||keys_SHIFT.includes(key))addCharacterDirect(key);
+      sounds.key_up.play();
+    }
   };
 
 	function generateRoomButtons(obj) {
@@ -663,6 +668,7 @@ app.loader.load((loader, resources) => {
 
 	// Tell the server to join a room and send data about the client too
 	function joinRoom(roomId) {
+    joinedRoom = true;
 		// Bottom screen fade animation
 		sounds.join_room.play();
 		pc_sprites.roomBadge = PIXI.Sprite.from("images/letter_" + roomData.id + ".png");
@@ -706,6 +712,7 @@ app.loader.load((loader, resources) => {
 	}
 	
 	function leaveRoom() {
+    joinedRoom = false;
 		sounds.leave_room.play();
 		clearStage();
 		var fadeDrawIn = setInterval(function() {
