@@ -107,6 +107,7 @@ wss.on('connection', function(ws,req) {
               data.message.textboxes[i].text=data.message.textboxes[i].text.slice(0,30);
             }
           }
+          data.message.textboxes=data.message.textboxes.slice(0,50);
           //todo: validate drawing
           data.type="sv_receivedMessage";
           data.message.player=ws.playerData;
