@@ -92,8 +92,8 @@ app.loader.load((loader, resources) => {
   
   window.onkeyup=function(e){
     if(joinedRoom){
-      const key = e.key.replace("Backspace","BACKSPACE").replace("CapsLock","CAPSLOCK").replace("Enter","ENTER").replace("Shift","SHIFT");
-      if(keys_NORMAL.includes(key)||keys_CAPS.includes(key)||keys_SHIFT.includes(key))addCharacterDirect(key);
+      const key = e.key.replace("Backspace","BACKSPACE").replace("Enter","ENTER");
+      if(key!="Shift"&&key!="CapsLock"&&(keys_NORMAL.includes(key)||keys_CAPS.includes(key)||keys_SHIFT.includes(key)))addCharacterDirect(key);
       sounds.key_up.play();
     }
   };
