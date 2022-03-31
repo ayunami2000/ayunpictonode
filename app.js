@@ -38,15 +38,26 @@ const wss = new WebSocketServer({ server });
 
 let users=[];
 
+let abusers=[];
+
 function playerChecks(data){
   return ("player" in data)&&("name" in data.player)&&("color" in data.player);
 }
 
-wss.on('connection', function connection(ws) {
+wss.on('connection', function(ws,req) {
   ws.playerData=null;
+  let ip=req.headers['x-forwarded-for']||req.connection.remoteAddress;
+  ip=ip.split(",",2)[0];
   let rate=0;
   let rateInterval=setInterval(()=>{
-    if(rate>=5){
+    if(rate>=10){
+      abusers.push(ip);
+      setTimeout(()=>{
+        let ind=abusers.indexOf(ip);
+        if(ind>-1){
+          abusers.remove(ip);
+        }
+      },10000);
       ws.close();
     }else{
       rate=0;
