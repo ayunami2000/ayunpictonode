@@ -79,6 +79,23 @@ app.loader.load((loader, resources) => {
 	var inRoom = false;
 	var inputFlag = false;
 	var drawQueue = [];
+	const keys_NORMAL = ["1","2","3","4","5","6","7","8","9","0","-","=","q","w","e","r","t","y","u","i","o","p","BACKSPACE","CAPS","a","s","d","f","g","h","j","k","l","ENTER","SHIFT","z","x","c","v","b","n","m",",",".","/",";","\'"," ","[","]"];
+	const keys_CAPS = ["1","2","3","4","5","6","7","8","9","0","-","=","Q","W","E","R","T","Y","U","I","O","P","BACKSPACE","CAPS","A","S","D","F","G","H","J","K","L","ENTER","SHIFT","Z","X","C","V","B","N","M",",",".","/",";","\'"," ","[","]"];
+	const keys_SHIFT = ["!","@","#","$","%","^","&","*","(",")","_","+","Q","W","E","R","T","Y","U","I","O","P","BACKSPACE","CAPS","A","S","D","F","G","H","J","K","L","ENTER","SHIFT","Z","X","C","V","B","N","M","<",">","?",":","~"," ","{","}"];
+  
+  window.onkeydown=function(e){
+    if(inRoom){
+      sounds.key_down.play();
+    }
+  };
+  
+  window.onkeyup=function(e){
+    if(inRoom){
+      const key = e.key.replace("Backspace","BACKSPACE").replace("CapsLock","CAPSLOCK").replace("Enter","ENTER").replace("Shift","SHIFT");
+      if(keys_NORMAL.includes(key)||keys_CAPS.includes(key)||keys_SHIFT.includes(key))addCharacterDirect(key);
+      sounds.key_up.play();
+    }
+  };
 
 	function generateRoomButtons(obj) {
 		pc_sprites.roomButtons = [];
@@ -360,9 +377,6 @@ app.loader.load((loader, resources) => {
 	}
 	
 	function getKey(keyIndex) {
-		const keys_NORMAL = ["1","2","3","4","5","6","7","8","9","0","-","=","q","w","e","r","t","y","u","i","o","p","BACKSPACE","CAPS","a","s","d","f","g","h","j","k","l","ENTER","SHIFT","z","x","c","v","b","n","m",",",".","/",";","\'"," ","[","]"];
-		const keys_CAPS = ["1","2","3","4","5","6","7","8","9","0","-","=","Q","W","E","R","T","Y","U","I","O","P","BACKSPACE","CAPS","A","S","D","F","G","H","J","K","L","ENTER","SHIFT","Z","X","C","V","B","N","M",",",".","/",";","\'"," ","[","]"];
-		const keys_SHIFT = ["!","@","#","$","%","^","&","*","(",")","_","+","Q","W","E","R","T","Y","U","I","O","P","BACKSPACE","CAPS","A","S","D","F","G","H","J","K","L","ENTER","SHIFT","Z","X","C","V","B","N","M","<",">","?",":","~"," ","{","}"];
 		var keys = [];
 		switch(kbMode) {
 			case 0:
@@ -374,9 +388,12 @@ app.loader.load((loader, resources) => {
 		}
 		return keys[keyIndex];
 	}
+  
+  function addCharacter(keyIndex) {
+    return addCharacterDirect(getKey(keyIndex));
+  }
 	
-	function addCharacter(keyIndex) {
-		var key = getKey(keyIndex);
+	function addCharacterDirect(key) {
 		if(key == "BACKSPACE") {
 			var txt = pc_sprites.textboxes[selectedTextbox].text;
 			if(txt.length > 0) {
@@ -432,7 +449,7 @@ app.loader.load((loader, resources) => {
 				pc_sprites.textboxes[selectedTextbox].text = txt.substring(0, txt.length - 1);
 				if(selectedTextbox < 4) {
 					selectedTextbox++;
-					addCharacter(keyIndex);
+					addCharacterDirect(key);
 				} else if(selectedTextbox > 4 && pc_sprites.textboxes[selectedTextbox].y/SCALE + 16 < 278) {
 					var tb = new PIXI.BitmapText(key, ndsFont);
 					tb.x = 27 * SCALE;
