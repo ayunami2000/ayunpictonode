@@ -51,8 +51,8 @@ wss.on('connection', function(ws,req) {
   let ip=req.headers['x-forwarded-for']||req.connection.remoteAddress;
   ip=ip.split(",",2)[0];
   if(!(ip in consperip))consperip[ip]=0;
-  if(consperip[ip]>5)return ws.close();
   consperip[ip]++;
+  if(consperip[ip]>5)return ws.close();
   let rate=0;
   let rateInterval=setInterval(()=>{
     if(rate>=10){
@@ -69,9 +69,9 @@ wss.on('connection', function(ws,req) {
     }
   },5000);
   ws.on('message', function message(data) {
-    rate++;
     data=data.toString();
     if(data=="pong")return setTimeout(()=>ws!=null&&ws.readyState===WebSocket.OPEN&&ws.send("ping"),10000);
+    rate++;
     try{
       data=JSON.parse(data);
       if(!("type" in data))return ws.close();
