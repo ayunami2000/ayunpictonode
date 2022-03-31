@@ -758,7 +758,7 @@ app.loader.load((loader, resources) => {
 				heartbeat();
 			} else {
 				var obj = JSON.parse(event.data);
-				console.log(obj);
+				//console.log(obj);
 				switch(obj.type) {
 					case "sv_roomIds": {
 						roomIds = obj.ids;
