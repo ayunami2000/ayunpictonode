@@ -102,6 +102,11 @@ wss.on('connection', function(ws,req) {
         case "cl_sendMessage":
           if(ws.playerData==null)return ws.close();
           if(!(("message" in data)&&playerChecks(data.message)&&("textboxes" in data.message)&&Array.isArray(data.message.textboxes)&&("lines" in data.message)&&!isNaN(data.message.lines)&&data.message.lines<=5&&data.message.lines>0))return ws.close();
+          for(let i=0;i<data.message.textboxes.length;i++){
+            if("text" in data.message.textboxes[i]){
+              data.message.textboxes[i].text=data.message.textboxes[i].text.slice(0,30);
+            }
+          }
           //todo: validate drawing
           data.type="sv_receivedMessage";
           data.message.player=ws.playerData;
