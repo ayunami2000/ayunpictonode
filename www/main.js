@@ -84,17 +84,13 @@ app.loader.load((loader, resources) => {
 	const keys_SHIFT = ["!","@","#","$","%","^","&","*","(",")","_","+","Q","W","E","R","T","Y","U","I","O","P","BACKSPACE","CAPS","A","S","D","F","G","H","J","K","L","ENTER","SHIFT","Z","X","C","V","B","N","M","<",">","?",":","~"," ","{","}"];
   
   window.onkeydown=function(e){
-    if(inRoom){
-      sounds.key_down.play();
-    }
+    sounds.key_down.play();
   };
   
   window.onkeyup=function(e){
-    if(inRoom){
-      const key = e.key.replace("Backspace","BACKSPACE").replace("CapsLock","CAPSLOCK").replace("Enter","ENTER").replace("Shift","SHIFT");
-      if(keys_NORMAL.includes(key)||keys_CAPS.includes(key)||keys_SHIFT.includes(key))addCharacterDirect(key);
-      sounds.key_up.play();
-    }
+    const key = e.key.replace("Backspace","BACKSPACE").replace("CapsLock","CAPSLOCK").replace("Enter","ENTER").replace("Shift","SHIFT");
+    if(keys_NORMAL.includes(key)||keys_CAPS.includes(key)||keys_SHIFT.includes(key))addCharacterDirect(key);
+    sounds.key_up.play();
   };
 
 	function generateRoomButtons(obj) {
