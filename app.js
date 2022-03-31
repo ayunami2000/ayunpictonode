@@ -136,7 +136,7 @@ wss.on('connection', function(ws,req) {
       let ind=users.indexOf(ws.playerData);
       if(ind>-1){
         users.splice(ind,1);
-        sendToOthers(ws,{type:"sv_playerLeft",player:ws.playerData,id:0});
+        sendToOthers(ws,{type:"sv_playerLeft",player:ws.playerData,id:"a"});
       }
     }
   });
