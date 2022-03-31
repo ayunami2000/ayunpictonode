@@ -40,6 +40,8 @@ let users=[];
 
 let abusers=[];
 
+let consperip={};
+
 function playerChecks(data){
   return ("player" in data)&&("name" in data.player)&&("color" in data.player);
 }
@@ -48,6 +50,9 @@ wss.on('connection', function(ws,req) {
   ws.playerData=null;
   let ip=req.headers['x-forwarded-for']||req.connection.remoteAddress;
   ip=ip.split(",",2)[0];
+  if(!(ip in consperip))consperip[ip]=0;
+  if(consperip[ip]>5)return ws.close();
+  consperip[ip]++;
   let rate=0;
   let rateInterval=setInterval(()=>{
     if(rate>=10){
@@ -120,6 +125,7 @@ wss.on('connection', function(ws,req) {
   });
   ws.on('close', function(){
     clearInterval(rateInterval);
+    consperip[ip]=Math.max(0,consperip[ip]-1);
     if(ws.playerData!=null){
       let ind=users.indexOf(ws.playerData);
       if(ind>-1){
