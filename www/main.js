@@ -58,7 +58,7 @@ app.loader.add('leave_room_c', 'images/leave_room_c.png');
 app.loader.add('leave_room_d', 'images/leave_room_d.png');
 app.loader.add('connection_bad', 'images/connection_bad.png');
 app.loader.load((loader, resources) => {
-	websocket = new WebSocket("ws"+window.location.origin.slice(4));
+	websocket = new WebSocket("ws"+window.location.href.slice(4));
 
 	document.getElementById("root").appendChild(app.view);
 	//document.getElementById("root").appendChild(canvas);
