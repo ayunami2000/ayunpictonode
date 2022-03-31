@@ -12,7 +12,7 @@ function throughDirectory(directory) {
   fs.readdirSync(directory).forEach(file => {
     const absolute = path.join(directory, file);
     if (fs.statSync(absolute).isDirectory()) return throughDirectory(absolute);
-    else return files.push(absolute.slice(prefix.length+1).replaceAll("\\","/"));
+    else return files.push(absolute.toString().slice(prefix.length+1).replace(/\\/g,"/"));
   });
 }
 
