@@ -44,9 +44,7 @@ function playerChecks(data){
 
 wss.on('connection', function connection(ws) {
   ws.playerData=null;
-  //let playerData=null;
   ws.on('message', function message(data) {
-    console.log('received: %s', data);
     data=data.toString();
     if(data=="pong")return setTimeout(()=>ws!=null&&ws.readyState===WebSocket.OPEN&&ws.send("ping"),10000);
     try{

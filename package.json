@@ -1,6 +1,15 @@
 {
+  "name": "pictonode",
+  "description": "Pictochat Online (https://christiankosman.com/pictochat) but I (ayunami2000) remade the server by hand.",
+  "main":"app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
   "dependencies": {
     "mime-types": "^2.1.35",
     "ws": "^8.5.0"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
