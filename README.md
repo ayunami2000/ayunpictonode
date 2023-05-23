@@ -1,3 +1,5 @@
+# [SEE THE NEWER JAVA IMPLEMENTATION](https://github.com/ayunami2000/ayunpictojava)
+
 # ayunpictonode
 
 **whar?** [Pictochat Online](https://christiankosman.com/pictochat) but I remade the server by hand.
